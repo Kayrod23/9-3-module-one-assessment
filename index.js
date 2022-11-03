@@ -28,7 +28,13 @@ const exampleMovies = require("./movies");
       "James and the Giant Peach",
     ];
  */
-function getAllMovieTitles() {}
+function getAllMovieTitles(movies) {
+  let movieTitleArr = []
+  for (let i = 0; i < movies.length; i++) {
+    movieTitleArr.push(movies[i].title) 
+  }
+  return movieTitleArr
+}
 
 /**
  * getHighestMetascore()
@@ -41,7 +47,15 @@ function getAllMovieTitles() {}
  *  getHighestMetascore(movies);
  *  //> 96
  */
-function getHighestMetascore() {}
+function getHighestMetascore(movies) {
+  let highestMetaScore = 0
+  for (let i = 0; i < movies.length; i++) {
+    if(movies[i].metascore > highestMetaScore) {
+      highestMetaScore =  Number(movies[i].metascore)
+    }
+  }
+  return highestMetaScore
+}
 
 /**
  * getAverageIMDBRating()
@@ -54,7 +68,16 @@ function getHighestMetascore() {}
  *  getAverageIMDBRating(movies);
  *  //> 7.76
  */
-function getAverageIMDBRating() {}
+function getAverageIMDBRating(movies) {
+  let averageIMDBRating = 0
+  for( let i = 0; i < movies.length; i++) {
+    averageIMDBRating += Number(movies[i].imdbRating) 
+  }
+  if(movies.length > 0) {
+    averageIMDBRating = averageIMDBRating / movies.length
+  }
+  return averageIMDBRating
+}
 
 /**
  * countByRating()
@@ -67,7 +90,25 @@ function getAverageIMDBRating() {}
  *  countByRating(movies);
  *  //> { G: 3, PG: 7 }
  */
-function countByRating() {}
+function countByRating(movies) {
+  let movieRatingCount = {}
+  let gCount = 0
+  let pg13Count = 0
+  let pgCount = 0
+  for (let i = 0; i < movies.length; i++) {
+    if(movies[i].rated === "G") {
+      gCount ++
+      movieRatingCount[movies[i].rated] = gCount
+    } else if(movies[i].rated === "PG") {
+      pgCount ++
+      movieRatingCount[movies[i].rated] = pgCount
+    } else if(movies[i].rated === "PG-13") {
+      pg13Count ++
+      movieRatingCount[movies[i].rated] = pg13Count
+    }
+  }
+  return movieRatingCount
+}
 
 /**
  * findById()
@@ -83,7 +124,15 @@ function countByRating() {}
       // Toy Story 4
     };
  */
-function findById() {}
+function findById(movies, id) {
+  let movieMatch = null
+  for (let i = 0; i < movies.length; i++) {
+    if (movies[i].imdbID === id) {
+      movieMatch  = movies[i]
+    }
+  }
+  return movieMatch
+}
 
 /**
  * filterByGenre()
@@ -105,7 +154,19 @@ function findById() {}
  *  filterByGenre(movies, "Horror")
  *  //> []
  */
-function filterByGenre() {}
+function filterByGenre(movies, genre) {
+  let matchingMovies = []
+  let lowercase = genre.toLowerCase()
+  let genreFormatted = genre.charAt(0).toUpperCase() + lowercase.slice(1)
+  for (let i = 0; i < movies.length; i++) {
+    for (let j = 0; j < movies[i].genre.split(", ").length; j++) {
+      if (movies[i].genre.split(", ")[j] === genreFormatted) {
+        matchingMovies.push(movies[i])
+      }
+    }
+  }
+  return matchingMovies
+}
 
 /**
  * getAllMoviesReleasedAtOrBeforeYear()
@@ -129,7 +190,15 @@ function filterByGenre() {}
       }
     ];
  */
-function getAllMoviesReleasedAtOrBeforeYear() {}
+function getAllMoviesReleasedAtOrBeforeYear(movies, year) {
+  let movieReleased = []
+  for (let i = 0; i < movies.length; i++) {
+    if (Number(movies[i].released.split(" ")[2]) === year || Number(movies[i].released.split(" ")[2]) < year) {
+      movieReleased.push(movies[i])
+    }
+  }
+  return movieReleased
+}
 
 /**
  * getBiggestBoxOfficeMovie()
@@ -142,7 +211,19 @@ function getAllMoviesReleasedAtOrBeforeYear() {}
  *  getBiggestBoxOfficeMovie(movies);
  *  //> "Incredibles 2"
  */
-function getBiggestBoxOfficeMovie() {}
+function getBiggestBoxOfficeMovie(movies) {
+  let biggestBoxOfficeMovie = null;
+  let biggestBoxOfficeMovieAmount = 0;
+  for (let i = 0; i < movies.length; i++) {
+    let boxOfficeCash = movies[i].boxOffice.split(",").join("")
+    boxOfficeCash = boxOfficeCash.slice(1)
+    if (parseInt(boxOfficeCash) > biggestBoxOfficeMovieAmount) {
+      biggestBoxOfficeMovieAmount = parseInt(boxOfficeCash)
+      biggestBoxOfficeMovie = movies[i].title
+    }
+  }
+  return biggestBoxOfficeMovie
+}
 
 // Do not change anything below this line.
 module.exports = {
